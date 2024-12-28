@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+    <meta name="description" content="Virtual Medical Assistant offering advice and symptom tracking.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="author" content="Kalejaiye Oluwamayowa Samuel">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="keywords" content="virtual medical assistant, medical assistant, virtual doctor, symptom tracking, health AI, medical advice">
+    <title>Virtual Medical Assistant</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* overflow: hidden; Prevents scrolling */
+            /* background: linear-gradient(135deg, #065993be, #2a2a2a,rgb(91, 112, 164), rgb(138, 146, 167), #262c6a, rgb(89, 153, 212), #102855, rgb(42, 53, 63)); */
+            background-color: #333;
+            animation: gradientMove 15s ease infinite; /* Animate the gradient */
+            transition: background 15s; /* Smooth transition for background */
+        }
+
+        .dark-mode {
+            background-color: #1e1e1e; /* Dark background */
+            color: #ffffff; /* Light text color */
+        }
+
+        .light-mode {
+            background-color: #ffffff; /* Light background */
+            color: #000000; /* Dark text color */
+        }
+
+        .chat-container {
+            width: 80%;
+            max-height: 400px;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Positioning context for child elements */
+            background: linear-gradient(135deg, #065993be, #2a2a2a,rgb(91, 112, 164), rgb(138, 146, 167), #262c6a, rgb(89, 153, 212), #102855, rgb(42, 53, 63)); /* Default background */
+            scrollbar-color: black;
+            scrollbar-color: var(--gray-600) transparent;
+        }
+
+        /* Moving gradient animation */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chat-header {
+            /* background: linear-gradient(135deg, #065993be, #1a1ac5,rgb(29, 80, 209), rgb(88, 120, 202), #262c6a, rgb(42, 120, 192), #102855, rgb(42, 53, 63)); */
+            background: linear-gradient(135deg, #9d9999, #333,#eed9d9, #2b2929, #9f9696, #fff8f8, #636262, #827a7a);
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+        }
+
+        .chat-messages {
+            flex: 1;    
+            padding: 20px;
+            margin-top: 5px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+            height: 100%;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            position: relative;
+            opacity: 0;
+            overflow-wrap: break-word;
+            z-index: 8;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;            
+        }
+
+        .chat-message:hover{
+            box-shadow: #000000 5px 5px ;
+            transform: scale(1);
+        }
+
+        .user-message {
+            background-color: #444444;
+            color: #ffffff;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #333; /* Bot message color */
+            color: #ffffff;
+            align-self: flex-start;
+        }
+
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #333; /* Dark border */
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            background-color: #333; /* Dark input background */
+            color: #ffffff; /* Light input text */
+        }
+
+        .chat-input input:hover{
+            box-shadow: #000000 10px 10px ;
+            background-color: #484545;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #000000;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background-color: #252424;
+        }
+
+        /* Fixed header */
+        h1 {
+            margin: 20px;
+            color: #ffffff; /* Light header color */
+            text-align: center;
+            position: fixed;
+            text-shadow: #000000 0px -10px 10px;
+            font-size: 3rem;
+            top: 20px; /* Adjust as needed */
+            left: 49%; /* Center horizontally */
+            transform: translateX(-50%); /* Center alignment */
+            z-index: 1; /* Ensure it stays under other elements */
+        }
+
+        /* Add animation for moving gradient */
+        .chat-container {
+            background-size: 400% 400%; /* Make the gradient larger for movement */
+            position: absolute;
+            z-index: 9;
+            scroll-behavior: auto;
+            max-height: 600px;
+            
+        }
+
+        .chat-container:hover{
+            box-shadow: #000000 10px 10px ;
+        }
+
+        .loading {
+            margin: 10px;
+            text-align: center;
+            color: #d9d1d1; /*Loading text color/ */
+            font-weight: 500;
+            font-style: oblique;
+        }
+
+        /* Light mode styles */
+        .light-mode {
+            transition-duration: 1s;
+        }
+
+        .light-mode .chat-container {
+            background: linear-gradient(135deg, #9d9999, #aea8a8,#eed9d9, #eee0e0, #9f9696, #fff8f8, #918d8d, #827a7a);
+            
+        }
+
+        .light-mode h1 {
+            color: #333;
+            transition: ease-in-out;
+        }
+
+        .light-mode body {
+            transition: ease-in-out;
+        }
+
+        /* Dark mode styles */
+        .dark-mode .chat-container {
+            background: linear-gradient(135deg, #333, #575555,#2b2929, #212020, #636262, #1a1919, #333, #2d2a2a);
+            transition: ease-in-out;
+            
+        }
+
+        /* Mode switch button */
+        .mode-switch {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            border: none;
+            /* background: linear-gradient(135deg, #061993be, #1014ef,rgb(37, 32, 181), rgb(31, 46, 210), #2837dc, rgb(24, 66, 235), #102855, rgb(42, 43, 63)); */
+            background-color: #484545;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 10; /* Make sure it appears above other elements */
+            transition-duration: 0.5s;
+        }
+
+        .mode-switch:hover{
+            box-shadow: #000000 10px 10px;
+            transition: ease-in-out;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <h1 >Virtual Medical Assistant</h1><br><Br><br>
+    <button class="mode-switch" onclick="toggleMode()">Switch to Light Mode</button>
+    <div class="chat-container">
+        <div class="chat-header">Chat with your Medical Assistant</div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <form id="chat-form" class="chat-input" onsubmit="sendMessage(event)">
+            <input type="text" id="chat-input" placeholder="Type a message..." required>
+            <button id="send-button" type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        async function sendMessage(event) {
+            event.preventDefault(); // Prevent form submission
+            const input = document.getElementById('chat-input');
+            const message = input.value; // Get the input message
+            input.value = ''; // Clear the input field
+
+            // Create user message element
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user-message';
+            userMessage.innerText = message;
+            document.getElementById('chat-messages').prepend(userMessage); // Prepend user message
+
+            // Animate the user message
+            setTimeout(() => {
+                userMessage.style.opacity = 1; // Fade in
+                userMessage.style.transform = 'translateY(0)'; // Slide up
+            }, 0);
+
+            // Create a loading indicator
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'loading';
+            loadingMessage.innerText = 'hmmm...';
+            document.getElementById('chat-messages').prepend(loadingMessage); // Prepend loading message
+
+            // Fetch response from the Flask app
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ 'user_input': message })
+            });
+
+            const data = await response.json(); // Get the bot's response as JSON
+            const botResponse = data.response || "Sorry, I didn't catch that."; // Default message if empty
+
+            // Remove the loading message
+            loadingMessage.remove();
+
+            // Create bot message element
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chat-message bot-message';
+            botMessage.innerHTML = botResponse; // Use innerHTML to render HTML
+            document.getElementById('chat-messages').prepend(botMessage); // Prepend bot message
+
+            // Animate the bot message
+            setTimeout(() => {
+                botMessage.style.opacity = 1; // Fade in
+                botMessage.style.transform = 'translateY(0)'; // Slide up
+            }, 0);
+        }
+
+        // Toggle between light and dark modes
+        function toggleMode() {
+            const body = document.body;
+            const chatContainer = document.querySelector('.chat-container');
+            const modeSwitch = document.querySelector('.mode-switch');
+
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                modeSwitch.innerText = 'Switch to Dark Mode';
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                modeSwitch.innerText = 'Switch to Light Mode';
+            }
+        }
+    </script>
+</body>
+</html>
