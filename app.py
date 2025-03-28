@@ -29,8 +29,8 @@ limiter = Limiter(
 )
 
 # Load the pre-trained medical model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("emilyalsentzer/Bio_ClinicalBERT")
-model = AutoModelForCausalLM.from_pretrained("emilyalsentzer/Bio_ClinicalBERT")
+tokenizer = AutoTokenizer.from_pretrained("nlpie/distil-biobert-base")
+model = AutoModelForCausalLM.from_pretrained("nlpie/distil-biobert-base")
 
 @app.route('/')
 def home():
